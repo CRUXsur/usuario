@@ -27,6 +27,32 @@ export function createDashboardHTML(): string {
         <main class="main-content">
           <!-- Top Cards Section -->
           <section class="top-cards">
+
+                <!-- Cliente Card -->
+                <div class="card cliente-card">
+                    <div class="card-header">
+                    <h3>CLIENTE</h3>
+                    <div class="card-icons">
+                        <button class="icon-btn-link" title="Buscar cliente">
+                        <span class="icon-placeholder">📲</span>
+                        </button>
+                        <button class="icon-btn-link" title="Agregar nuevo cliente">
+                        <span class="icon-placeholder">➕</span>
+                        </button>
+                    </div>
+                    </div>
+                    <div class="card-body">
+                    <div class="input-group">
+                        <label>CI</label>
+                        <div class="input-container">
+                        <input type="text" id="ci-input" placeholder="Ingrese CI">
+                        <span class="icon-placeholder">🔍</span>
+                        </div>
+                    </div>
+
+                </div>
+
+
   
           </section>
         </main>
