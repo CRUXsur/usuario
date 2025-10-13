@@ -1,12 +1,12 @@
 import './style.css'
-import { renderDashboard } from './dashboard.ts'
+import { renderLoginForm } from './login.ts'
 
-
-
-
-// Inicializar el dashboard cuando el DOM esté listo
+// Inicializar el login cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', () => {
-  renderDashboard();
+  const appElement = document.querySelector<HTMLDivElement>('#app');
+  if (appElement) {
+    appElement.innerHTML = renderLoginForm();
+  }
 });
 
 

@@ -29,6 +29,135 @@ body {
   /* text-align: center; */
 }
 
+
+
+/* ----------------------------------------------- Login Layout ----------------------------------------------- */
+
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  /* background-color: #1a1a1a; */
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+button:hover {
+  border-color: #747bff;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.result {
+  margin-top: 2rem;
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: left;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.success {
+  background-color: #1a4d1a;
+  border: 1px solid #2d7a2d;
+  color: #90ee90;
+}
+
+.error {
+  background-color: #4d1a1a;
+  border: 1px solid #7a2d2d;
+  color: #ffb6c1;
+}
+
+h3 {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.result h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.result p {
+  margin: 0.5rem 0;
+}
+
+/* ----------------- Authentication section styles ------------------ */
+.login-container {
+  display: flex;
+  justify-content: center;
+  /* min-height: 100vh; */
+  width: 100%;
+  padding: 2rem;
+  box-sizing: border-box;
+  padding-top: 4rem;
+}
+
+.card-login {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.form-group-login {
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.form-group-login label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.form-group-login input {
+  width: 100%;
+  padding: 0.6em 1em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1em;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  /* background-color: #1a1a1a; */
+  color: inherit;
+  box-sizing: border-box;
+}
+
+.form-group-login input:focus {
+  outline: none;
+  border-color: #747bff;
+}
+
+.dashboard-container {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  /* min-height: calc(100vh - 80px); */
+  /* border: 2px solid #fff; */
+}
+
+
+
+
+
+
 /* --------------------------------------------- Dashboard Layout --------------------------------------------- */
 
 .dashboard-container {
