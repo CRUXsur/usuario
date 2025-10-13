@@ -39,10 +39,18 @@ export function renderLoginForm(): string {
   
   // Función para navegar al dashboard después del login exitoso
   function navigateToDashboard(): void {
-    // Importar dinámicamente el dashboard para evitar dependencias circulares
-    import('./dashboard').then(({ renderDashboard }) => {
+    // Importar dinámicamente el dashboard y el modal para evitar dependencias circulares
+    Promise.all([
+      import('./dashboard'),
+      import('./nuevocliente')
+    ]).then(([{ renderDashboard }, { inicializarModalNuevoCliente }]) => {
       document.querySelector<HTMLDivElement>('#app')!.innerHTML = ''
       renderDashboard()
+      
+      // Esperar a que el DOM se actualice antes de inicializar el modal
+      setTimeout(() => {
+        inicializarModalNuevoCliente()
+      }, 0)
     }).catch(error => {
       console.error('Error loading dashboard:', error)
       alert('Error al cargar el dashboard')

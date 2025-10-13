@@ -30,7 +30,11 @@ async function navigateToDashboard(): Promise<void> {
     
     document.querySelector<HTMLDivElement>('#app')!.innerHTML = ''
     renderDashboard()
-    inicializarModalNuevoCliente()
+    
+    // Esperar a que el DOM se actualice antes de inicializar el modal
+    setTimeout(() => {
+      inicializarModalNuevoCliente()
+    }, 0)
   } catch (error) {
     console.error('Error loading dashboard:', error)
     alert('Error al cargar el dashboard')

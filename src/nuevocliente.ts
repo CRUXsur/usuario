@@ -270,10 +270,16 @@ export function configurarEventListenersModal(): void {
 
 // Función para inicializar el modal en el dashboard
 export function inicializarModalNuevoCliente(): void {
+    console.log('🔧 Inicializando modal nuevo cliente...');
+    
     // Agregar el HTML del modal al body
     const appElement = document.querySelector<HTMLDivElement>('#app');
     if (appElement) {
         appElement.insertAdjacentHTML('beforeend', createNuevoClienteModal());
+        console.log('✅ Modal HTML agregado al DOM');
+    } else {
+        console.error('❌ No se encontró el elemento #app');
+        return;
     }
 
     // Configurar event listeners
@@ -281,8 +287,22 @@ export function inicializarModalNuevoCliente(): void {
 
     // Agregar event listener al botón de "Agregar nuevo cliente"
     const agregarClienteBtn = document.querySelector('.cliente-card .card-icons button:nth-child(2)');
+    console.log('🔍 Buscando botón "Agregar nuevo cliente":', agregarClienteBtn);
+    
     if (agregarClienteBtn) {
-        agregarClienteBtn.addEventListener('click', mostrarModalNuevoCliente);
+        agregarClienteBtn.addEventListener('click', () => {
+            console.log('🖱️ Click en botón "Agregar nuevo cliente"');
+            mostrarModalNuevoCliente();
+        });
+        console.log('✅ Event listener agregado al botón');
+    } else {
+        console.error('❌ No se encontró el botón "Agregar nuevo cliente"');
+        console.log('📝 Intentando con todos los botones...');
+        const todosLosBotones = document.querySelectorAll('.cliente-card .card-icons button');
+        console.log('Botones encontrados:', todosLosBotones.length);
+        todosLosBotones.forEach((btn, index) => {
+            console.log(`Botón ${index}:`, btn);
+        });
     }
 }
 
