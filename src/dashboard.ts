@@ -35,10 +35,35 @@ export function createDashboardHTML(): string {
     `;
 }
 
+// Función para inicializar eventos del dashboard
+function initializeDashboardEvents(): void {
+  // Botón de logout
+  const logoutBtn = document.querySelector('.logout-btn');
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+      if (confirm('¿Está seguro que desea salir?')) {
+        console.log('Logout clicked - iniciando proceso de logout');
+        
+        // Importar dinámicamente la función de logout
+        import('./login.ts').then(({ logout }) => {
+          logout();
+        }).catch(error => {
+          console.error('Error importing logout function:', error);
+          alert('Error al realizar logout');
+        });
+      }
+    });
+  } else {
+    console.error('Logout button not found');
+  }
+}
+
 // Función principal para renderizar el dashboard
 export function renderDashboard(): void {
     const appElement = document.querySelector<HTMLDivElement>('#app');
     if (appElement) {
       appElement.innerHTML = createDashboardHTML();
+      // Inicializar eventos después de renderizar el HTML
+      initializeDashboardEvents();
     }
 }
