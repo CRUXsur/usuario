@@ -395,7 +395,9 @@ body {
 
 .form-group input,
 .form-group select,
-.form-group-small input {
+.form-group textarea,
+.form-group-small input,
+.form-group-small select {
   padding: 8px 12px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -403,11 +405,19 @@ body {
   background-color: #fff;
 }
 
+.form-group textarea {
+  resize: vertical;
+  font-family: inherit;
+  min-height: 60px;
+}
+
 .form-group input:focus,
 .form-group select:focus,
-.form-group-small input:focus {
+.form-group textarea:focus,
+.form-group-small input:focus,
+.form-group-small select:focus {
   outline: none;
-  border-color: #4e4743;
+  border-color: #747bff;
 }
 
 .checkbox-group {

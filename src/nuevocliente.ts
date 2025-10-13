@@ -1,11 +1,3 @@
-// Función para generar número único del dispositivo
-function generateDeviceNumber(): string {
-    // Simula la lectura de un número único del dispositivo
-    // En producción, esto debería leer el IMEI o un identificador único real
-    const timestamp = Date.now();
-    const random = Math.floor(Math.random() * 10000);
-    return `DEV-${timestamp}-${random}`;
-}
 
 // Función para crear el HTML del modal de nuevo cliente
 export function createNuevoClienteModal(): string {
@@ -26,51 +18,20 @@ export function createNuevoClienteModal(): string {
                         </div>
 
                         <div class="form-row">
-                            <div class="form-group">
-                                <label for="moneda">Moneda:</label>
-                                <select id="moneda" name="moneda">
-                                    <option value="">Seleccionar...</option>
-                                    <option value="USD">USD</option>
-                                    <option value="BS">BS</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="aporte-mensual">Aporte Mensual:</label>
-                                <input type="text" id="aporte-mensual" name="aporte-mensual">
-                            </div>
-                        </div>
 
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="banco-coop">Banco/Coop:</label>
-                                <select id="banco-coop" name="banco-coop">
-                                    <option value="">Seleccionar...</option>
-                                    <option value="banco1">Banco 1</option>
-                                    <option value="banco2">Banco 2</option>
-                                </select>
+                            <div class="form-group-small">
+                                <label for="tel-ci">CI:</label>
+                                <input type="text" id="tel-ci" name="tel-ci">
                             </div>
-                            <div class="form-group">
-                                <label for="no-cuenta">No Cuenta:</label>
-                                <input type="text" id="no-cuenta" name="no-cuenta">
+                            <div class="form-group-small">
+                                <label for="tel-celular">Celular:</label>
+                                <input type="text" id="tel-celular" name="tel-celular">
                             </div>
-                        </div>
+                            <div class="form-group-small">
+                                <label for="tel-fijo">Fijo:</label>
+                                <input type="text" id="tel-fijo" name="tel-fijo">
+                            </div>
 
-                        <div class="form-section">
-                            <h3>Teléfonos:</h3>
-                            <div class="form-row">
-                                <div class="form-group-small">
-                                    <label for="tel-celular">Celular:</label>
-                                    <input type="text" id="tel-celular" name="tel-celular">
-                                </div>
-                                <div class="form-group-small">
-                                    <label for="tel-fijo">Fijo:</label>
-                                    <input type="text" id="tel-fijo" name="tel-fijo">
-                                </div>
-                                <div class="form-group-small">
-                                    <label for="tel-ci">CI:</label>
-                                    <input type="text" id="tel-ci" name="tel-ci">
-                                </div>
-                            </div>
                         </div>
 
                         <div class="form-row">
@@ -91,24 +52,47 @@ export function createNuevoClienteModal(): string {
                             </div>
                         </div>
 
-                        <div class="form-section">
-                            <h3>Registro:</h3>
-                            <div class="form-row">
-                                <div class="form-group-small">
-                                    <label for="reg-celular">Celular:</label>
-                                    <input type="text" id="reg-celular" name="reg-celular">
-                                </div>
-                                <div class="form-group-small">
-                                    <label for="reg-fijo">Fijo:</label>
-                                    <input type="text" id="reg-fijo" name="reg-fijo">
-                                </div>
-                                <div class="form-group-small">
-                                    <label for="reg-ci">CI:</label>
-                                    <input type="text" id="reg-ci" name="reg-ci">
-                                </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="sector">Sector(Grupo):</label>
+                                <select id="sector" name="sector">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="Salud">Salud</option>
+                                    <option value="Magisterio">Magisterio</option>
+                                    <option value="Otros">Otros</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="codigo-interno">Codigo:</label>
+                                <input type="text" id="codigo-interno" name="codigo-interno">
                             </div>
                         </div>
-                    </form>
+
+                        <div class="form-row">
+                            <div class="form-group-small">
+                                <label for="banco-coop">Banco/Coop:</label>
+                                <select id="banco-coop" name="banco-coop">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="BancoUnion">Banco Union</option>
+                                    <option value="BCP">BCP</option>
+                                    <option value="BNB">BNB</option>
+                                    <option value="Coop">Cooperativa</option>
+                                </select>
+                            </div>
+                            <div class="form-group-small">
+                                <label for="no-cuenta">No Cuenta:</label>
+                                <input type="text" id="no-cuenta" name="no-cuenta">
+                            </div>
+                            <div class="form-group-small">
+                                <label for="moneda">Moneda:</label>
+                                <select id="moneda" name="moneda">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="USD">Dólares</option>
+                                    <option value="BS">Bolivianos</option>
+                                </select>
+                            </div>
+                        </div>
+
                         <div class="form-section">
                             <h3>Garante:</h3>
                             <div class="form-row">
@@ -123,10 +107,11 @@ export function createNuevoClienteModal(): string {
                             </div>
                             <div class="form-group full-width">
                                 <label for="observaciones">Observaciones:</label>
-                                <input type="text" id="observaciones" name="observaciones">
+                                <textarea id="observaciones" name="observaciones" rows="3"></textarea>
                             </div>
-                        </div>    
+                        </div>
 
+                    </form>
                 </div>
 
                 <div class="modal-footer">
@@ -181,8 +166,8 @@ export function configurarEventListenersModal(): void {
             if (inputDispositivo) {
                 // Simular lectura del número único del dispositivo
                 // En producción, aquí iría la lógica real para leer del dispositivo
-                const numeroUnico = generateDeviceNumber();
-                inputDispositivo.value = numeroUnico;
+                // const numeroUnico = generateDeviceNumber();
+                // inputDispositivo.value = numeroUnico;
             }
         });
     }
