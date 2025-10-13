@@ -10,17 +10,6 @@ export function createNuevoClienteModal(): string {
                 <div class="modal-body">
                     <form id="form-nuevo-cliente">
                         <div class="form-row">
-                            <div class="form-group">
-                                <label for="garanter">Garanter:</label>
-                                <input type="text" id="garanter" name="garanter">
-                            </div>
-                            <div class="form-group">
-                                <label for="observaciones">Observaciones:</label>
-                                <input type="text" id="observaciones" name="observaciones">
-                            </div>
-                        </div>
-
-                        <div class="form-row">
                             <div class="form-group full-width">
                                 <label for="nombre-completo">Nombre Completo:</label>
                                 <input type="text" id="nombre-completo" name="nombre-completo">
@@ -77,12 +66,12 @@ export function createNuevoClienteModal(): string {
 
                         <div class="form-row">
                             <div class="form-group checkbox-group">
-                                <label for="wor-tablet">Wor Tablet?:</label>
+                                <label for="wor-tablet">Activo?:</label>
                                 <input type="checkbox" id="wor-tablet" name="wor-tablet">
                             </div>
                             <div class="form-group">
-                                <label for="telefono">Teléfono:</label>
-                                <input type="text" id="telefono" name="telefono">
+                                <label for="vto-tarjeta">Vto. Tarjeta:</label>
+                                <input type="month" id="vto-tarjeta" name="vto-tarjeta">
                             </div>
                         </div>
 
@@ -104,7 +93,26 @@ export function createNuevoClienteModal(): string {
                             </div>
                         </div>
                     </form>
+                        <div class="form-section">
+                            <h3>Garante:</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="garanter">Nombre Completo:</label>
+                                    <input type="text" id="garanter" name="garanter">
+                                </div>
+                                <div class="form-group">
+                                    <label for="reg-celular">Celular:</label>
+                                    <input type="text" id="reg-celular" name="reg-celular">
+                                </div>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="observaciones">Observaciones:</label>
+                                <input type="text" id="observaciones" name="observaciones">
+                            </div>
+                        </div>    
+
                 </div>
+
                 <div class="modal-footer">
                     <button type="button" class="btn-cancelar" id="btn-cancelar">Cancelar</button>
                     <button type="button" class="btn-guardar" id="btn-guardar">Guardar</button>
