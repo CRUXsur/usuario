@@ -1,3 +1,51 @@
+// Función para validar el formulario
+function validarFormulario(form: HTMLFormElement): boolean {
+    // Limpiar errores previos
+    const inputs = form.querySelectorAll('input[required], select[required], textarea[required]');
+    inputs.forEach(input => {
+        input.classList.remove('input-error');
+    });
+
+    // Eliminar mensajes de error previos
+    const errorMessages = form.querySelectorAll('.error-message');
+    errorMessages.forEach(msg => msg.remove());
+
+    let isValid = true;
+    let primerCampoInvalido: HTMLElement | null = null;
+
+    // Validar cada campo requerido
+    inputs.forEach(input => {
+        const htmlInput = input as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
+        
+        if (!htmlInput.value.trim()) {
+            isValid = false;
+            htmlInput.classList.add('input-error');
+            
+            // Agregar mensaje de error
+            const errorMsg = document.createElement('span');
+            errorMsg.className = 'error-message';
+            errorMsg.textContent = 'Este campo es requerido';
+            htmlInput.parentElement?.appendChild(errorMsg);
+
+            // Guardar el primer campo inválido para hacer scroll
+            if (!primerCampoInvalido) {
+                primerCampoInvalido = htmlInput;
+            }
+        }
+    });
+
+    // Mostrar alerta si hay errores
+    if (!isValid) {
+        alert('Por favor, complete todos los campos requeridos (*)');
+        
+        // Hacer scroll al primer campo inválido
+        if (primerCampoInvalido && 'focus' in primerCampoInvalido) {
+            (primerCampoInvalido as HTMLInputElement).focus();
+        }
+    }
+
+    return isValid;
+}
 
 // Función para crear el HTML del modal de nuevo cliente
 export function createNuevoClienteModal(): string {
@@ -9,23 +57,23 @@ export function createNuevoClienteModal(): string {
                     <button class="close-modal" id="close-modal-btn">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <form id="form-nuevo-cliente">
+                    <form id="form-nuevo-cliente" novalidate>
                         <div class="form-row">
                             <div class="form-group full-width">
-                                <label for="nombre-completo">Nombre Completo:</label>
-                                <input type="text" id="nombre-completo" name="nombre-completo">
+                                <label for="nombre-completo">Nombre Completo: <span class="required">*</span></label>
+                                <input type="text" id="nombre-completo" name="nombre-completo" required>
                             </div>
                         </div>
 
                         <div class="form-row">
 
                             <div class="form-group-small">
-                                <label for="tel-ci">CI:</label>
-                                <input type="text" id="tel-ci" name="tel-ci">
+                                <label for="tel-ci">CI: <span class="required">*</span></label>
+                                <input type="text" id="tel-ci" name="tel-ci" required>
                             </div>
                             <div class="form-group-small">
-                                <label for="tel-celular">Celular:</label>
-                                <input type="text" id="tel-celular" name="tel-celular">
+                                <label for="tel-celular">Celular: <span class="required">*</span></label>
+                                <input type="text" id="tel-celular" name="tel-celular" required>
                             </div>
                             <div class="form-group-small">
                                 <label for="tel-fijo">Fijo:</label>
@@ -40,52 +88,54 @@ export function createNuevoClienteModal(): string {
                                 <input type="checkbox" id="wor-tablet" name="wor-tablet">
                             </div>
                             <div class="form-group">
-                                <label for="numero-dispositivo">N° Dispositivo:</label>
+                                <label for="numero-dispositivo">N° Dispositivo: <span class="required">*</span></label>
                                 <div class="input-container">
                                     <span class="icon-placeholder device-icon" id="btn-leer-dispositivo">📲</span>
-                                    <input type="text" id="numero-dispositivo" name="numero-dispositivo" readonly>
+                                    <input type="text" id="numero-dispositivo" name="numero-dispositivo" readonly required>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="vto-tarjeta">Vto. Tarjeta:</label>
-                                <input type="month" id="vto-tarjeta" name="vto-tarjeta">
+                                <label for="vto-tarjeta">Vto. Tarjeta: <span class="required">*</span></label>
+                                <input type="month" id="vto-tarjeta" name="vto-tarjeta" required>
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="sector">Sector(Grupo):</label>
-                                <select id="sector" name="sector">
+                                <label for="sector">Sector(Grupo): <span class="required">*</span></label>
+                                <select id="sector" name="sector" required>
                                     <option value="">Seleccionar...</option>
                                     <option value="Salud">Salud</option>
                                     <option value="Magisterio">Magisterio</option>
+                                    <option value="Petrolero">Petrolero</option>
+                                    <option value="Comerciantes">Comerciantes</option>
                                     <option value="Otros">Otros</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="codigo-interno">Codigo:</label>
-                                <input type="text" id="codigo-interno" name="codigo-interno">
+                                <label for="codigo-interno">Codigo: <span class="required">*</span></label>
+                                <input type="text" id="codigo-interno" name="codigo-interno" required>
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group-small">
-                                <label for="banco-coop">Banco/Coop:</label>
-                                <select id="banco-coop" name="banco-coop">
+                                <label for="banco-coop">Banco/Coop: <span class="required">*</span></label>
+                                <select id="banco-coop" name="banco-coop" required>
                                     <option value="">Seleccionar...</option>
-                                    <option value="BancoUnion">Banco Union</option>
+                                    <option value="UNImovilPlus">UNImovilPlus</option>
                                     <option value="BCP">BCP</option>
                                     <option value="BNB">BNB</option>
                                     <option value="Coop">Cooperativa</option>
                                 </select>
                             </div>
                             <div class="form-group-small">
-                                <label for="no-cuenta">No Cuenta:</label>
-                                <input type="text" id="no-cuenta" name="no-cuenta">
+                                <label for="no-cuenta">No Cuenta: <span class="required">*</span></label>
+                                <input type="text" id="no-cuenta" name="no-cuenta" required>
                             </div>
                             <div class="form-group-small">
-                                <label for="moneda">Moneda:</label>
-                                <select id="moneda" name="moneda">
+                                <label for="moneda">Moneda: <span class="required">*</span></label>
+                                <select id="moneda" name="moneda" required>
                                     <option value="">Seleccionar...</option>
                                     <option value="USD">Dólares</option>
                                     <option value="BS">Bolivianos</option>
@@ -97,12 +147,12 @@ export function createNuevoClienteModal(): string {
                             <h3>Garante:</h3>
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label for="garanter">Nombre Completo:</label>
-                                    <input type="text" id="garanter" name="garanter">
+                                    <label for="garanter">Nombre Completo: <span class="required">*</span></label>
+                                    <input type="text" id="garanter" name="garanter" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="reg-celular">Celular:</label>
-                                    <input type="text" id="reg-celular" name="reg-celular">
+                                    <label for="reg-celular">Celular: <span class="required">*</span></label>
+                                    <input type="text" id="reg-celular" name="reg-celular" required>
                                 </div>
                             </div>
                             <div class="form-group full-width">
@@ -140,6 +190,19 @@ export function cerrarModalNuevoCliente(): void {
         const form = document.getElementById('form-nuevo-cliente') as HTMLFormElement;
         if (form) {
             form.reset();
+            
+            // Limpiar errores de validación
+            const inputs = form.querySelectorAll('.input-error');
+            inputs.forEach(input => input.classList.remove('input-error'));
+            
+            const errorMessages = form.querySelectorAll('.error-message');
+            errorMessages.forEach(msg => msg.remove());
+            
+            // Limpiar campo de dispositivo readonly
+            const dispositivoInput = document.getElementById('numero-dispositivo') as HTMLInputElement;
+            if (dispositivoInput) {
+                dispositivoInput.value = '';
+            }
         }
     }
 }
@@ -178,6 +241,11 @@ export function configurarEventListenersModal(): void {
         guardarBtn.addEventListener('click', () => {
             const form = document.getElementById('form-nuevo-cliente') as HTMLFormElement;
             if (form) {
+                // Validar formulario
+                if (!validarFormulario(form)) {
+                    return; // No continuar si hay errores
+                }
+                
                 // Aquí puedes agregar la lógica para guardar los datos
                 const formData = new FormData(form);
                 const data = Object.fromEntries(formData.entries());
