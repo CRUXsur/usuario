@@ -1,5 +1,19 @@
 
 
+// Función para obtener el nombre del usuario
+function getUserDisplayName(): string {
+  try {
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      const user = JSON.parse(userData);
+      return user.fullName || user.name || user.email || 'User';
+    }
+  } catch (error) {
+    console.error('Error parsing user data:', error);
+  }
+  return 'User';
+}
+
 // Función para crear el HTML del dashboard
 export function createDashboardHTML(): string {
     return `
@@ -9,7 +23,7 @@ export function createDashboardHTML(): string {
         <header class="header">
           
           <div class="header-left">
-            <span class="user-label">User</span>
+            <span class="user-label">${getUserDisplayName()}</span>
           </div>
 
           <div class="header-right">
