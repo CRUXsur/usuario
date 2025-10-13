@@ -1,3 +1,12 @@
+// Función para generar número único del dispositivo
+function generateDeviceNumber(): string {
+    // Simula la lectura de un número único del dispositivo
+    // En producción, esto debería leer el IMEI o un identificador único real
+    const timestamp = Date.now();
+    const random = Math.floor(Math.random() * 10000);
+    return `DEV-${timestamp}-${random}`;
+}
+
 // Función para crear el HTML del modal de nuevo cliente
 export function createNuevoClienteModal(): string {
     return `
@@ -68,6 +77,13 @@ export function createNuevoClienteModal(): string {
                             <div class="form-group checkbox-group">
                                 <label for="wor-tablet">Activo?:</label>
                                 <input type="checkbox" id="wor-tablet" name="wor-tablet">
+                            </div>
+                            <div class="form-group">
+                                <label for="numero-dispositivo">N° Dispositivo:</label>
+                                <div class="input-container">
+                                    <span class="icon-placeholder device-icon" id="btn-leer-dispositivo">📲</span>
+                                    <input type="text" id="numero-dispositivo" name="numero-dispositivo" readonly>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="vto-tarjeta">Vto. Tarjeta:</label>
@@ -155,6 +171,20 @@ export function configurarEventListenersModal(): void {
     const cancelBtn = document.getElementById('btn-cancelar');
     if (cancelBtn) {
         cancelBtn.addEventListener('click', cerrarModalNuevoCliente);
+    }
+
+    // Botón leer dispositivo
+    const btnLeerDispositivo = document.getElementById('btn-leer-dispositivo');
+    if (btnLeerDispositivo) {
+        btnLeerDispositivo.addEventListener('click', () => {
+            const inputDispositivo = document.getElementById('numero-dispositivo') as HTMLInputElement;
+            if (inputDispositivo) {
+                // Simular lectura del número único del dispositivo
+                // En producción, aquí iría la lógica real para leer del dispositivo
+                const numeroUnico = generateDeviceNumber();
+                inputDispositivo.value = numeroUnico;
+            }
+        });
     }
 
     // Botón guardar

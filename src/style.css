@@ -481,6 +481,36 @@ body {
   transform: scale(0.95);
 }
 
+/* Estilo para el campo de dispositivo */
+.form-group .input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.form-group .input-container input {
+  flex: 1;
+  padding-left: 40px;
+}
+
+.form-group .input-container .device-icon {
+  position: absolute;
+  left: 8px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 300ms;
+  z-index: 1;
+}
+
+.form-group .input-container .device-icon:hover {
+  text-shadow: 0 0 20px #4e4743, 0 0 30px #4e4743;
+}
+
+.form-group .input-container .device-icon:active {
+  text-shadow: 0 0 25px #4e4743, 0 0 35px #4e4743, 0 0 45px #4e4743;
+  transform: scale(0.90);
+}
+
 
 
 
