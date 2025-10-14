@@ -678,6 +678,174 @@ h3 {
 
 
 
+/* ----------------------------------------- Lista de Clientes Layout ----------------------------------------- */
+
+.clientes-section {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.lista-clientes-card {
+  width: 100%;
+}
+
+.lista-clientes-card .card-body {
+  padding: 0;
+}
+
+.clientes-tabla-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.loading-container {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+  font-size: 16px;
+}
+
+.no-data {
+  text-align: center;
+  padding: 40px;
+  color: #999;
+  font-size: 14px;
+  font-style: italic;
+}
+
+/* Estilos de la tabla */
+.clientes-tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  background: white;
+}
+
+.clientes-tabla thead {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.clientes-tabla th {
+  padding: 15px 12px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.clientes-tabla tbody tr {
+  border-bottom: 1px solid #e0e0e0;
+  transition: background-color 0.2s ease;
+}
+
+.clientes-tabla tbody tr:hover {
+  background-color: #f8f9ff;
+}
+
+.clientes-tabla td {
+  padding: 12px;
+  vertical-align: middle;
+}
+
+.clientes-tabla td.monto {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.clientes-tabla td.acciones-cell {
+  white-space: nowrap;
+}
+
+/* Estilos para filas de clientes inactivos */
+.clientes-tabla tbody tr.cliente-inactivo {
+  background-color: #f5f5f5;
+  opacity: 0.7;
+}
+
+.clientes-tabla tbody tr.cliente-inactivo:hover {
+  background-color: #ebebeb;
+  opacity: 0.8;
+}
+
+.clientes-tabla tbody tr.cliente-inactivo td {
+  color: #999;
+}
+
+/* Botones de acción */
+.btn-action {
+  background: none;
+  border: none;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.2s ease;
+  border-radius: 6px;
+  margin: 0 2px;
+}
+
+.btn-action:hover {
+  background-color: #f0f0f0;
+  transform: scale(1.1);
+}
+
+.btn-action:active {
+  transform: scale(0.95);
+}
+
+.btn-view {
+  color: #667eea;
+}
+
+.btn-edit {
+  color: #ffa726;
+}
+
+/* Botón toggle estado */
+.btn-toggle {
+  background: none;
+  border: none;
+  padding: 6px 10px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.btn-toggle:hover {
+  opacity: 0.7;
+}
+
+.btn-toggle .toggle-icon {
+  display: inline-block;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .clientes-tabla {
+    font-size: 11px;
+  }
+
+  .clientes-tabla th,
+  .clientes-tabla td {
+    padding: 8px 6px;
+  }
+
+  .status-badge {
+    font-size: 10px;
+    padding: 3px 8px;
+  }
+
+  .btn-action {
+    font-size: 14px;
+    padding: 4px 8px;
+  }
+}
+
+
 
 
 
