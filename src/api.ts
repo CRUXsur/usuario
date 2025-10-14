@@ -81,6 +81,28 @@ export interface ClienteDetalle {
     updated_at: string;
 }
 
+// Interface for Banco Cliente
+export interface BancoClienteData {
+    id_banco_cliente?: string;
+    banco: string;
+    noCta: string;
+    nombre: string;
+    moneda: string;
+    isActive?: boolean;
+    created_at?: string;
+    updated_at?: string;
+}
+
+// Interface for Create Banco Cliente DTO
+export interface CreateBancoClienteDto {
+    clienteId: string;
+    banco: string;
+    noCta: string;
+    nombre: string;
+    moneda: string;
+    isActive?: boolean;
+}
+
 // Function to call the check-device-id API
 export async function checkDeviceId(): Promise<DeviceCheckResponse> {
     try {
@@ -296,6 +318,190 @@ export async function toggleClienteEstado(clienteId: string, nuevoEstado: boolea
         return {
             success: false,
             error: error instanceof Error ? error.message : 'Error desconocido al actualizar estado',
+        };
+    }
+}
+
+// Function to get bancos by cliente ID
+export async function obtenerBancosCliente(clienteId: string): Promise<ApiResponse<BancoClienteData[]>> {
+    try {
+        const token = getAuthToken();
+        if (!token) {
+            return {
+                success: false,
+                error: 'No se encontró token de autenticación. Por favor, inicie sesión.',
+            };
+        }
+
+        console.log(`📡 Obteniendo bancos del cliente ${clienteId}...`);
+
+        const response = await fetch(`${API_BASE_URL}/banco-cliente/cliente/${clienteId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const bancos = await response.json();
+        console.log('📥 Bancos obtenidos:', bancos);
+
+        return {
+            success: true,
+            data: bancos,
+        };
+
+    } catch (error) {
+        console.error('💥 Error al obtener bancos del cliente:', error);
+        return {
+            success: false,
+            error: error instanceof Error ? error.message : 'Error desconocido al obtener bancos',
+        };
+    }
+}
+
+// Function to create banco cliente
+export async function crearBancoCliente(bancoData: CreateBancoClienteDto): Promise<ApiResponse<BancoClienteData>> {
+    try {
+        const token = getAuthToken();
+        if (!token) {
+            return {
+                success: false,
+                error: 'No se encontró token de autenticación. Por favor, inicie sesión.',
+            };
+        }
+
+        console.log('📡 Creando banco del cliente...', bancoData);
+
+        const response = await fetch(`${API_BASE_URL}/banco-cliente`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify(bancoData),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            console.error('❌ Error en la respuesta del servidor:', data);
+            return {
+                success: false,
+                error: data.message || data.error || `Error HTTP: ${response.status}`,
+            };
+        }
+
+        console.log('✅ Banco del cliente creado exitosamente:', data);
+        return {
+            success: true,
+            message: 'Banco creado exitosamente',
+            data: data,
+        };
+
+    } catch (error) {
+        console.error('💥 Error al crear banco del cliente:', error);
+        return {
+            success: false,
+            error: error instanceof Error ? error.message : 'Error desconocido al crear banco',
+        };
+    }
+}
+
+// Function to update banco cliente
+export async function actualizarBancoCliente(bancoId: string, bancoData: Partial<CreateBancoClienteDto>): Promise<ApiResponse<BancoClienteData>> {
+    try {
+        const token = getAuthToken();
+        if (!token) {
+            return {
+                success: false,
+                error: 'No se encontró token de autenticación. Por favor, inicie sesión.',
+            };
+        }
+
+        console.log(`📡 Actualizando banco ${bancoId}...`, bancoData);
+
+        const response = await fetch(`${API_BASE_URL}/banco-cliente/${bancoId}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify(bancoData),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            console.error('❌ Error en la respuesta del servidor:', data);
+            return {
+                success: false,
+                error: data.message || data.error || `Error HTTP: ${response.status}`,
+            };
+        }
+
+        console.log('✅ Banco del cliente actualizado exitosamente:', data);
+        return {
+            success: true,
+            message: 'Banco actualizado exitosamente',
+            data: data,
+        };
+
+    } catch (error) {
+        console.error('💥 Error al actualizar banco del cliente:', error);
+        return {
+            success: false,
+            error: error instanceof Error ? error.message : 'Error desconocido al actualizar banco',
+        };
+    }
+}
+
+// Function to delete banco cliente
+export async function eliminarBancoCliente(bancoId: string): Promise<ApiResponse> {
+    try {
+        const token = getAuthToken();
+        if (!token) {
+            return {
+                success: false,
+                error: 'No se encontró token de autenticación. Por favor, inicie sesión.',
+            };
+        }
+
+        console.log(`📡 Eliminando banco ${bancoId}...`);
+
+        const response = await fetch(`${API_BASE_URL}/banco-cliente/${bancoId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            console.error('❌ Error en la respuesta del servidor:', data);
+            return {
+                success: false,
+                error: data.message || data.error || `Error HTTP: ${response.status}`,
+            };
+        }
+
+        console.log('✅ Banco del cliente eliminado exitosamente:', data);
+        return {
+            success: true,
+            message: 'Banco eliminado exitosamente',
+        };
+
+    } catch (error) {
+        console.error('💥 Error al eliminar banco del cliente:', error);
+        return {
+            success: false,
+            error: error instanceof Error ? error.message : 'Error desconocido al eliminar banco',
         };
     }
 }

@@ -1,7 +1,11 @@
 import { obtenerClientePorId, type ClienteDetalle } from './api';
+import { obtenerBancosCliente, crearBancoCliente, actualizarBancoCliente, type BancoClienteData, type CreateBancoClienteDto } from './api';
 
 // Variable para almacenar el cliente actual
 let clienteActual: ClienteDetalle | null = null;
+
+// Variable para almacenar los bancos del cliente
+let bancosCliente: BancoClienteData[] = [];
 
 // Función para crear el HTML de la pestaña General
 function createGeneralTabContent(cliente: ClienteDetalle): string {
@@ -266,6 +270,286 @@ function handleTabChange(tabName: string): void {
             content.classList.remove('active');
         }
     });
+
+    // Si cambió a la pestaña banco, cargar los bancos
+    if (tabName === 'banco' && clienteActual) {
+        cargarBancosCliente(clienteActual.id_cliente);
+    }
+}
+
+// Función para crear el HTML del tab Banco
+function createBancoTabContent(): string {
+    const banco1 = bancosCliente[0] || null;
+    const banco2 = bancosCliente[1] || null;
+
+    return `
+        <div class="banco-container">
+            <div class="cuentas-main-container">
+                ${renderBancoCard(banco1, 0)}
+                ${renderBancoCard(banco2, 1)}
+            </div>
+        </div>
+    `;
+}
+
+// Función para renderizar una tarjeta de banco
+function renderBancoCard(banco: BancoClienteData | null, index: number): string {
+    if (banco) {
+        const estadoEmoji = banco.isActive ? '✅' : '❌';
+        return `
+            <div class="cuenta-section" data-banco-index="${index}">
+                <div class="cuenta-header">
+                    <h3 class="cuenta-titulo">CUENTA BANCARIA #${index + 1}</h3>
+                    <div class="cuenta-header-actions">
+                        <span class="estado-emoji" title="${banco.isActive ? 'Cuenta Activa' : 'Cuenta Inactiva'}">${estadoEmoji}</span>
+                        <button class="edit-cuenta-btn" data-banco-id="${banco.id_banco_cliente}" title="Editar cuenta">
+                            <span class="edit-icon">📝</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="cuenta-content">
+                    <div class="cuenta-field">
+                        <span class="cuenta-label">Institución:</span>
+                        <span class="cuenta-value">${banco.banco}</span>
+                    </div>
+                    
+                    <div class="cuenta-field">
+                        <span class="cuenta-label">N° Cuenta:</span>
+                        <span class="cuenta-value">${banco.noCta}</span>
+                    </div>
+                    
+                    <div class="cuenta-field">
+                        <span class="cuenta-label">Titular:</span>
+                        <span class="cuenta-value">${banco.nombre}</span>
+                    </div>
+                    
+                    <div class="cuenta-field">
+                        <span class="cuenta-label">Moneda:</span>
+                        <span class="cuenta-value">${banco.moneda}</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    } else {
+        return `
+            <div class="cuenta-section cuenta-nueva" data-banco-index="${index}">
+                <div class="nueva-cuenta-content">
+                    <div class="nueva-cuenta-icon">
+                        <span class="add-icon">➕</span>
+                    </div>
+                    <h3 class="nueva-cuenta-titulo">Agregar Cuenta Bancaria #${index + 1}</h3>
+                    <p class="nueva-cuenta-descripcion">Haga clic para crear una nueva cuenta bancaria</p>
+                    <button class="add-cuenta-btn" data-banco-index="${index}" title="Agregar nueva cuenta">
+                        Crear Cuenta
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+}
+
+// Función para cargar bancos del cliente
+async function cargarBancosCliente(clienteId: string): Promise<void> {
+    try {
+        console.log('📡 Cargando bancos del cliente:', clienteId);
+        const response = await obtenerBancosCliente(clienteId);
+
+        if (response.success && response.data) {
+            bancosCliente = response.data;
+            console.log('✅ Bancos cargados:', bancosCliente);
+            
+            // Renderizar contenido del tab banco
+            const bancoTab = document.getElementById('tab-banco');
+            if (bancoTab) {
+                bancoTab.innerHTML = createBancoTabContent();
+                inicializarEventosBanco();
+            }
+        } else {
+            console.error('❌ Error al cargar bancos:', response.error);
+            const bancoTab = document.getElementById('tab-banco');
+            if (bancoTab) {
+                bancoTab.innerHTML = `<p class="tab-placeholder" style="color: #ff4444;">Error al cargar los bancos: ${response.error}</p>`;
+            }
+        }
+    } catch (error) {
+        console.error('💥 Error inesperado:', error);
+        const bancoTab = document.getElementById('tab-banco');
+        if (bancoTab) {
+            bancoTab.innerHTML = '<p class="tab-placeholder" style="color: #ff4444;">Error inesperado al cargar los bancos</p>';
+        }
+    }
+}
+
+// Función para inicializar eventos del tab banco
+function inicializarEventosBanco(): void {
+    // Botones de agregar banco
+    const addBtns = document.querySelectorAll('.add-cuenta-btn');
+    addBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const index = (e.currentTarget as HTMLElement).getAttribute('data-banco-index');
+            if (index !== null && clienteActual) {
+                mostrarModalBanco(null, parseInt(index));
+            }
+        });
+    });
+
+    // Botones de editar banco
+    const editBtns = document.querySelectorAll('.edit-cuenta-btn');
+    editBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const bancoId = (e.currentTarget as HTMLElement).getAttribute('data-banco-id');
+            if (bancoId) {
+                const banco = bancosCliente.find(b => b.id_banco_cliente === bancoId);
+                if (banco) {
+                    const index = bancosCliente.indexOf(banco);
+                    mostrarModalBanco(banco, index);
+                }
+            }
+        });
+    });
+}
+
+// Función para mostrar modal de banco
+function mostrarModalBanco(banco: BancoClienteData | null, index: number): void {
+    const modal = crearModalBanco(banco, index);
+    document.body.appendChild(modal);
+    modal.style.display = 'flex';
+}
+
+// Función para crear modal de banco
+function crearModalBanco(banco: BancoClienteData | null, index: number): HTMLElement {
+    const modal = document.createElement('div');
+    modal.className = 'cuenta-modal';
+    modal.id = 'modal-banco-edit';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>${banco ? 'Editar' : 'Agregar'} Cuenta Bancaria #${index + 1}</h3>
+                <button class="close-modal-btn" id="close-banco-modal">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="banco-institucion">Institución:</label>
+                    <input type="text" id="banco-institucion" value="${banco?.banco || ''}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="banco-numero">N° Cuenta:</label>
+                    <input type="text" id="banco-numero" value="${banco?.noCta || ''}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="banco-titular">Titular:</label>
+                    <input type="text" id="banco-titular" value="${banco?.nombre || ''}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="banco-moneda">Moneda:</label>
+                    <select id="banco-moneda" required>
+                        <option value="">Seleccionar...</option>
+                        <option value="Dólares" ${banco?.moneda === 'Dólares' ? 'selected' : ''}>Dólares</option>
+                        <option value="Bolivianos" ${banco?.moneda === 'Bolivianos' ? 'selected' : ''}>Bolivianos</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Estado:</label>
+                    <div class="estado-checkbox-section">
+                        <input type="checkbox" id="banco-activa" class="estado-checkbox" ${banco?.isActive !== false ? 'checked' : ''}>
+                        <label for="banco-activa" class="estado-checkbox-label">
+                            <span class="checkbox-emoji"></span>
+                            <span class="checkbox-text">Cuenta Activa</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button id="cancel-banco-btn" class="btn btn-secondary">Cancelar</button>
+                <button id="save-banco-btn" class="btn btn-primary">${banco ? 'Actualizar' : 'Guardar'}</button>
+            </div>
+        </div>
+    `;
+
+    // Event listeners
+    const closeBtn = modal.querySelector('#close-banco-modal');
+    const cancelBtn = modal.querySelector('#cancel-banco-btn');
+    const saveBtn = modal.querySelector('#save-banco-btn');
+
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => modal.remove());
+    }
+
+    if (cancelBtn) {
+        cancelBtn.addEventListener('click', () => modal.remove());
+    }
+
+    if (saveBtn) {
+        saveBtn.addEventListener('click', async () => {
+            const formData = {
+                banco: (modal.querySelector('#banco-institucion') as HTMLInputElement).value,
+                noCta: (modal.querySelector('#banco-numero') as HTMLInputElement).value,
+                nombre: (modal.querySelector('#banco-titular') as HTMLInputElement).value,
+                moneda: (modal.querySelector('#banco-moneda') as HTMLSelectElement).value,
+                isActive: (modal.querySelector('#banco-activa') as HTMLInputElement).checked,
+            };
+
+            if (!formData.banco || !formData.noCta || !formData.nombre || !formData.moneda) {
+                alert('Por favor complete todos los campos');
+                return;
+            }
+
+            if (banco && banco.id_banco_cliente) {
+                // Actualizar banco existente
+                await actualizarBanco(banco.id_banco_cliente, formData);
+            } else if (clienteActual) {
+                // Crear nuevo banco
+                await crearBanco({ ...formData, clienteId: clienteActual.id_cliente });
+            }
+
+            modal.remove();
+        });
+    }
+
+    return modal;
+}
+
+// Función para crear banco
+async function crearBanco(bancoData: CreateBancoClienteDto): Promise<void> {
+    try {
+        const response = await crearBancoCliente(bancoData);
+        if (response.success) {
+            alert('Banco creado exitosamente');
+            if (clienteActual) {
+                await cargarBancosCliente(clienteActual.id_cliente);
+            }
+        } else {
+            alert(`Error: ${response.error}`);
+        }
+    } catch (error) {
+        console.error('Error al crear banco:', error);
+        alert('Error al crear el banco');
+    }
+}
+
+// Función para actualizar banco
+async function actualizarBanco(bancoId: string, bancoData: Partial<CreateBancoClienteDto>): Promise<void> {
+    try {
+        const response = await actualizarBancoCliente(bancoId, bancoData);
+        if (response.success) {
+            alert('Banco actualizado exitosamente');
+            if (clienteActual) {
+                await cargarBancosCliente(clienteActual.id_cliente);
+            }
+        } else {
+            alert(`Error: ${response.error}`);
+        }
+    } catch (error) {
+        console.error('Error al actualizar banco:', error);
+        alert('Error al actualizar el banco');
+    }
 }
 
 // Función para configurar los event listeners del modal
