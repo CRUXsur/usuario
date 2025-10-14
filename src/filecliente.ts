@@ -328,6 +328,20 @@ function renderBancoCard(banco: BancoClienteData | null, index: number): string 
                         <span class="cuenta-label">Moneda:</span>
                         <span class="cuenta-value">${banco.moneda}</span>
                     </div>
+                    
+                    ${banco.usuario ? `
+                    <div class="cuenta-field">
+                        <span class="cuenta-label">Usuario:</span>
+                        <span class="cuenta-value">${banco.usuario}</span>
+                    </div>
+                    ` : ''}
+                    
+                    ${banco.key ? `
+                    <div class="cuenta-field">
+                        <span class="cuenta-label">Key:</span>
+                        <span class="cuenta-value cuenta-key">${'•'.repeat(Math.min(banco.key.length, 12))}</span>
+                    </div>
+                    ` : ''}
                 </div>
             </div>
         `;
@@ -455,6 +469,16 @@ function crearModalBanco(banco: BancoClienteData | null, index: number): HTMLEle
                 </div>
                 
                 <div class="form-group">
+                    <label for="banco-usuario">Usuario:</label>
+                    <input type="text" id="banco-usuario" value="${banco?.usuario || ''}" placeholder="Usuario de banca en línea (opcional)">
+                </div>
+                
+                <div class="form-group">
+                    <label for="banco-key">Key:</label>
+                    <input type="password" id="banco-key" value="${banco?.key || ''}" placeholder="Contraseña/Clave (opcional)">
+                </div>
+                
+                <div class="form-group">
                     <label>Estado:</label>
                     <div class="estado-checkbox-section">
                         <input type="checkbox" id="banco-activa" class="estado-checkbox" ${banco?.isActive !== false ? 'checked' : ''}>
@@ -488,7 +512,10 @@ function crearModalBanco(banco: BancoClienteData | null, index: number): HTMLEle
 
     if (saveBtn) {
         saveBtn.addEventListener('click', async () => {
-            const formData = {
+            const usuarioValue = (modal.querySelector('#banco-usuario') as HTMLInputElement).value.trim();
+            const keyValue = (modal.querySelector('#banco-key') as HTMLInputElement).value.trim();
+            
+            const formData: any = {
                 banco: (modal.querySelector('#banco-institucion') as HTMLInputElement).value,
                 noCta: (modal.querySelector('#banco-numero') as HTMLInputElement).value,
                 nombre: (modal.querySelector('#banco-titular') as HTMLInputElement).value,
@@ -496,8 +523,16 @@ function crearModalBanco(banco: BancoClienteData | null, index: number): HTMLEle
                 isActive: (modal.querySelector('#banco-activa') as HTMLInputElement).checked,
             };
 
+            // Agregar campos opcionales solo si tienen valor
+            if (usuarioValue) {
+                formData.usuario = usuarioValue;
+            }
+            if (keyValue) {
+                formData.key = keyValue;
+            }
+
             if (!formData.banco || !formData.noCta || !formData.nombre || !formData.moneda) {
-                alert('Por favor complete todos los campos');
+                alert('Por favor complete todos los campos obligatorios');
                 return;
             }
 

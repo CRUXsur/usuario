@@ -1416,6 +1416,13 @@ h3 {
   text-align: right;
 }
 
+.cuenta-key {
+  font-family: monospace;
+  letter-spacing: 2px;
+  color: #6c757d;
+  font-size: 16px;
+}
+
 /* Acciones de cada cuenta */
 .cuenta-actions {
   margin-top: 15px;

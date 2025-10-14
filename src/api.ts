@@ -88,6 +88,8 @@ export interface BancoClienteData {
     noCta: string;
     nombre: string;
     moneda: string;
+    usuario?: string;
+    key?: string;
     isActive?: boolean;
     created_at?: string;
     updated_at?: string;
@@ -100,6 +102,8 @@ export interface CreateBancoClienteDto {
     noCta: string;
     nombre: string;
     moneda: string;
+    usuario?: string;
+    key?: string;
     isActive?: boolean;
 }
 
