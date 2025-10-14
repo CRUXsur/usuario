@@ -1,5 +1,6 @@
 
 import { obtenerClientes, toggleClienteEstado, type ClienteConDatos } from './api';
+import { inicializarModalFileCliente, agregarEventListenersBtnView } from './filecliente';
 
 // Variable global para almacenar todos los clientes
 let todosLosClientes: ClienteConDatos[] = [];
@@ -278,15 +279,8 @@ function agregarEventListenersAcciones(): void {
     });
   });
 
-  // Botones de ver
-  const btnsView = document.querySelectorAll('.btn-view');
-  btnsView.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      const clienteId = (e.currentTarget as HTMLElement).getAttribute('data-id');
-      console.log('Ver cliente:', clienteId);
-      // TODO: Implementar vista de detalles
-    });
-  });
+  // Botones de ver - delegar a filecliente.ts
+  agregarEventListenersBtnView();
 
   // Botones de editar
   const btnsEdit = document.querySelectorAll('.btn-edit');
@@ -366,5 +360,7 @@ export function renderDashboard(): void {
       appElement.innerHTML = createDashboardHTML();
       // Inicializar eventos después de renderizar el HTML
       initializeDashboardEvents();
+      // Inicializar modal de file cliente
+      inicializarModalFileCliente();
     }
 }

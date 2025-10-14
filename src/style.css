@@ -905,4 +905,131 @@ h3 {
 
 
 
+/* ---------------------------------------- Modal File Cliente con Tabs ---------------------------------------- */
+
+/* Modal específico para file cliente */
+.modal-file-cliente {
+  max-width: 900px;
+  max-height: 85vh;
+}
+
+/* Tab Menu */
+.tab-menu {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid #e0e0e0;
+  margin-bottom: 0;
+  /*background-color: #b7ada6;*/
+  background-color: #dbd4d0;
+  border-radius: 8px 8px 0 0;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 15px 20px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #666;
+  border-radius: 8px 8px 0 0;
+  transition: all 0.3s ease;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  position: relative;
+}
+
+.tab-btn:hover {
+  background-color: #e9ecef;
+  color: #333;
+}
+
+.tab-btn.active {
+  background-color: #ffffff;
+  color: #333;
+  font-weight: bold;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.tab-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: #ffffff;
+}
+
+.tab-btn:active {
+  transform: scale(0.98);
+}
+
+/* Tab Content */
+.tab-content-container {
+  background-color: #ffffff;
+  border-radius: 0 0 8px 8px;
+  min-height: 500px;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.tab-content {
+  display: none;
+  animation: fadeIn 0.3s ease-in;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.tab-placeholder {
+  padding: 40px;
+  text-align: center;
+  color: #666;
+  font-size: 16px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 2px dashed #dee2e6;
+  margin: 0;
+  font-style: italic;
+}
+
+/* Animación de fade in para el contenido de las pestañas */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive para tabs */
+@media (max-width: 768px) {
+  .tab-btn {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+
+  .modal-file-cliente {
+    max-width: 95%;
+  }
+}
+
+@media (max-width: 480px) {
+  .tab-menu {
+    flex-wrap: wrap;
+  }
+
+  .tab-btn {
+    flex: 1 1 45%;
+    font-size: 11px;
+    padding: 8px 10px;
+  }
+}
+
 /* ------------------------------------------------------------------------------------------------------------ */
