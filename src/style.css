@@ -751,7 +751,8 @@ h3 {
 }
 
 .clientes-tabla thead {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  /*background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);*/
+  background: linear-gradient(135deg, #837770 0%, #b7ada6 100%);
   color: white;
   position: sticky;
   top: 0;
