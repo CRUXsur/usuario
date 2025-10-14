@@ -1,6 +1,9 @@
 
 import { obtenerClientes, toggleClienteEstado, type ClienteConDatos } from './api';
 
+// Variable global para almacenar todos los clientes
+let todosLosClientes: ClienteConDatos[] = [];
+
 // Función para obtener el nombre del usuario
 function getUserDisplayName(): string {
   try {
@@ -73,7 +76,20 @@ export function createDashboardHTML(): string {
             <div class="card lista-clientes-card">
                 <div class="card-header">
                     <h3>LISTA DE CLIENTES</h3>
-                    <div class="card-icons">
+                    <div class="card-header-right">
+                        <select id="filtro-sector" class="filtro-select-header">
+                            <option value="">Todos los sectores</option>
+                            <option value="Salud">Salud</option>
+                            <option value="Magisterio">Magisterio</option>
+                            <option value="Petrolero">Petrolero</option>
+                            <option value="Comerciantes">Comerciantes</option>
+                            <option value="Otros">Otros</option>
+                        </select>
+                        <select id="filtro-estado" class="filtro-select-header">
+                            <option value="">Todos los estados</option>
+                            <option value="true">Activos</option>
+                            <option value="false">Inactivos</option>
+                        </select>
                         <button class="icon-btn-link" id="btn-refresh-clientes" title="Actualizar lista">
                             <span class="icon-placeholder">🔄</span>
                         </button>
@@ -142,6 +158,39 @@ function renderClientesTabla(clientes: ClienteConDatos[]): string {
   `;
 }
 
+// Función para filtrar clientes por sector y estado
+function filtrarClientes(): void {
+  const listaElement = document.getElementById('clientes-lista');
+  if (!listaElement) return;
+
+  // Obtener valores de ambos filtros
+  const filtroSector = document.getElementById('filtro-sector') as HTMLSelectElement;
+  const filtroEstado = document.getElementById('filtro-estado') as HTMLSelectElement;
+  
+  const sectorSeleccionado = filtroSector ? filtroSector.value : '';
+  const estadoSeleccionado = filtroEstado ? filtroEstado.value : '';
+
+  let clientesFiltrados = todosLosClientes;
+
+  // Aplicar filtro de sector
+  if (sectorSeleccionado !== '') {
+    clientesFiltrados = clientesFiltrados.filter(cliente => cliente.sector === sectorSeleccionado);
+  }
+
+  // Aplicar filtro de estado
+  if (estadoSeleccionado !== '') {
+    const estadoBool = estadoSeleccionado === 'true';
+    clientesFiltrados = clientesFiltrados.filter(cliente => cliente.isActive === estadoBool);
+  }
+
+  const infoSector = sectorSeleccionado || 'Todos';
+  const infoEstado = estadoSeleccionado === '' ? 'Todos' : (estadoSeleccionado === 'true' ? 'Activos' : 'Inactivos');
+  console.log(`📊 Mostrando ${clientesFiltrados.length} clientes - Sector: ${infoSector}, Estado: ${infoEstado}`);
+  
+  listaElement.innerHTML = renderClientesTabla(clientesFiltrados);
+  agregarEventListenersAcciones();
+}
+
 // Función para cargar clientes desde el backend
 async function cargarClientes(): Promise<void> {
   const loadingElement = document.getElementById('clientes-loading');
@@ -159,10 +208,12 @@ async function cargarClientes(): Promise<void> {
 
     if (response.success && response.data) {
       console.log('✅ Clientes cargados:', response.data);
-      listaElement.innerHTML = renderClientesTabla(response.data);
       
-      // Agregar event listeners a los botones de acción
-      agregarEventListenersAcciones();
+      // Guardar todos los clientes
+      todosLosClientes = response.data;
+      
+      // Aplicar filtros actuales
+      filtrarClientes();
     } else {
       console.error('❌ Error al cargar clientes:', response.error);
       listaElement.innerHTML = `<p class="error-message">Error: ${response.error}</p>`;
@@ -276,6 +327,25 @@ function initializeDashboardEvents(): void {
     btnRefresh.addEventListener('click', async () => {
       console.log('🔄 Actualizando lista de clientes...');
       await cargarClientes();
+    });
+  }
+
+  // Filtro de sector
+  const filtroSector = document.getElementById('filtro-sector') as HTMLSelectElement;
+  if (filtroSector) {
+    filtroSector.addEventListener('change', () => {
+      console.log('🔍 Filtrando por sector:', filtroSector.value || 'Todos');
+      filtrarClientes();
+    });
+  }
+
+  // Filtro de estado
+  const filtroEstado = document.getElementById('filtro-estado') as HTMLSelectElement;
+  if (filtroEstado) {
+    filtroEstado.addEventListener('change', () => {
+      const estadoTexto = filtroEstado.value === '' ? 'Todos' : (filtroEstado.value === 'true' ? 'Activos' : 'Inactivos');
+      console.log('🔍 Filtrando por estado:', estadoTexto);
+      filtrarClientes();
     });
   }
 
