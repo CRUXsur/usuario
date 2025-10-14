@@ -145,7 +145,7 @@ function renderClientesTabla(clientes: ClienteConDatos[]): string {
                 <span class="toggle-icon">${cliente.isActive ? '✅' : '❌'}</span>
               </button>
               <button class="btn-action btn-view" data-id="${cliente.id_cliente}" title="Ver detalles">
-                👁️
+                📁
               </button>
               <button class="btn-action btn-edit" data-id="${cliente.id_cliente}" title="Editar">
                 ✏️
