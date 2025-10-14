@@ -59,6 +59,28 @@ export interface ClienteConDatos {
     prestamos?: any[];
 }
 
+// Interface for Cliente completo con todos los detalles
+export interface ClienteDetalle {
+    id_cliente: string;
+    nombrecompleto: string;
+    ci: string;
+    celular: string | null;
+    fijo: string | null;
+    isActive: boolean;
+    device_id: string;
+    fecha_vto_tarjeta: string | null;
+    sector: string;
+    codigo: string;
+    banco: string | null;
+    numero_cuenta: string | null;
+    moneda: string | null;
+    garante: string | null;
+    celular_garante: string | null;
+    observaciones: string | null;
+    created_at: string;
+    updated_at: string;
+}
+
 // Function to call the check-device-id API
 export async function checkDeviceId(): Promise<DeviceCheckResponse> {
     try {
@@ -184,6 +206,48 @@ export async function obtenerClientes(): Promise<ApiResponse<ClienteConDatos[]>>
         return {
             success: false,
             error: error instanceof Error ? error.message : 'Error desconocido al obtener clientes',
+        };
+    }
+}
+
+// Function to get a specific cliente by ID
+export async function obtenerClientePorId(clienteId: string): Promise<ApiResponse<ClienteDetalle>> {
+    try {
+        const token = getAuthToken();
+        if (!token) {
+            return {
+                success: false,
+                error: 'No se encontró token de autenticación. Por favor, inicie sesión.',
+            };
+        }
+
+        console.log(`📡 Obteniendo datos del cliente ${clienteId}...`);
+
+        const response = await fetch(`${API_BASE_URL}/clientes/${clienteId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const cliente = await response.json();
+        console.log('📥 Cliente obtenido:', cliente);
+
+        return {
+            success: true,
+            data: cliente,
+        };
+
+    } catch (error) {
+        console.error('💥 Error al obtener cliente:', error);
+        return {
+            success: false,
+            error: error instanceof Error ? error.message : 'Error desconocido al obtener cliente',
         };
     }
 }

@@ -1032,4 +1032,204 @@ h3 {
   }
 }
 
+/* ----------------------------- Datos Generales Tab Styles ----------------------------- */
+.datos-generales-container {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 20px;
+  background-color: #f5f5f5;
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Tarjeta principal con información del cliente */
+.datos-main-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e9ecef;
+  position: relative;
+  min-height: 350px;
+}
+
+/* Sección de información personal */
+.personal-info-section {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.info-row {
+  display: flex;
+  gap: 30px;
+  align-items: flex-start;
+}
+
+.info-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1;
+}
+
+.info-field.serie-field {
+  align-self: flex-end;
+  max-width: 300px;
+}
+
+.info-field.full-width {
+  flex: 1;
+}
+
+.info-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.info-value {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  padding: 8px 0;
+  min-height: 24px;
+}
+
+/* Toggle Activo en esquina inferior derecha */
+.estado-section {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 15px;
+  background-color: #f8f9fa;
+  border-radius: 6px;
+  border: 1px solid #e9ecef;
+}
+
+.estado-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #495057;
+}
+
+/* Toggle switch personalizado */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  height: 25px;
+  display: flex;
+  align-items: center;
+}
+
+.toggle-input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-label {
+  display: block;
+  width: 50px;
+  height: 24px;
+  background-color: #ccc;
+  border-radius: 12px;
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.toggle-slider {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border-radius: 50%;
+  transition: transform 0.3s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-input:checked + .toggle-label {
+  background-color: #007bff;
+}
+
+.toggle-input:checked + .toggle-label .toggle-slider {
+  transform: translateX(26px);
+}
+
+/* Tarjeta separada para fechas de registro */
+.registro-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e9ecef;
+}
+
+.registro-row {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+}
+
+.registro-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1;
+}
+
+.registro-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.registro-value {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  padding: 8px 0;
+  min-height: 24px;
+}
+
+/* Responsive design para Datos Generales */
+@media (max-width: 768px) {
+  .datos-main-card {
+    padding: 20px;
+  }
+  
+  .info-row {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .info-field.serie-field {
+    align-self: flex-start;
+    max-width: none;
+  }
+  
+  .estado-section {
+    position: relative;
+    bottom: auto;
+    right: auto;
+    margin-top: 20px;
+    align-self: center;
+  }
+  
+  .registro-row {
+    flex-direction: column;
+    gap: 15px;
+  }
+}
+
 /* ------------------------------------------------------------------------------------------------------------ */
