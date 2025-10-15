@@ -1795,7 +1795,7 @@ h3 {
 }
 
 #tab-prestamos .prestamos-table thead {
-  background: linear-gradient(135deg, #837770 0%, #b7ada6 100%);
+  background: linear-gradient(135deg, #837770 0%, #b7ada6 100%) !important;
   color: white;
   position: sticky;
   top: 0;
@@ -1906,52 +1906,42 @@ h3 {
   transform: scale(0.95);
 }
 
-/* Modal de edición de préstamo - reutiliza estilos de cuenta-modal */
+/* Modal de edición de préstamo - usa estilos de cuenta-modal */
+#modal-prestamo-edit .modal-content,
+#modal-prestamo-nuevo .modal-content {
+  max-width: 450px;
+}
+
 #modal-prestamo-edit .form-group,
 #modal-prestamo-nuevo .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
+}
+
+#modal-prestamo-edit .form-group input,
+#modal-prestamo-nuevo .form-group input {
+  padding: 8px 10px;
+  font-size: 13px;
 }
 
 #modal-prestamo-edit .form-group label,
 #modal-prestamo-nuevo .form-group label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: 600;
-  color: #495057;
-  font-size: 14px;
+  font-size: 13px;
+  margin-bottom: 6px;
 }
 
-#modal-prestamo-edit .form-group input[type="number"],
-#modal-prestamo-edit .form-group input[type="date"],
-#modal-prestamo-nuevo .form-group input[type="number"],
-#modal-prestamo-nuevo .form-group input[type="date"] {
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #ced4da;
-  border-radius: 6px;
-  font-size: 14px;
-  transition: all 0.2s ease;
+#modal-prestamo-edit .modal-body,
+#modal-prestamo-nuevo .modal-body {
+  padding: 15px 30px;
 }
 
-#modal-prestamo-edit .form-group input[type="number"]:focus,
-#modal-prestamo-edit .form-group input[type="date"]:focus,
-#modal-prestamo-nuevo .form-group input[type="number"]:focus,
-#modal-prestamo-nuevo .form-group input[type="date"]:focus {
-  outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+#modal-prestamo-edit .modal-header,
+#modal-prestamo-nuevo .modal-header {
+  padding: 15px 30px;
 }
 
-#modal-prestamo-edit .form-group input[readonly],
-#modal-prestamo-nuevo .form-group input[readonly] {
-  background-color: #e9ecef;
-  cursor: not-allowed;
-}
-
-#modal-prestamo-edit .form-group small,
-#modal-prestamo-nuevo .form-group small {
-  display: block;
-  margin-top: 5px;
+#modal-prestamo-edit .modal-footer,
+#modal-prestamo-nuevo .modal-footer {
+  padding: 15px 30px;
 }
 
 /* Responsive para tabla de préstamos */
