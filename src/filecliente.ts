@@ -24,13 +24,21 @@ function createGeneralTabContent(cliente: ClienteDetalle): string {
                             <label class="info-label">N° Serie:</label>
                             <div class="info-value">${cliente.device_id || '-'}</div>
                         </div>
+                        <div class="info-field">
+                            <label class="info-label">CI:</label>
+                            <div class="info-value">${cliente.ci || '-'}</div>
+                        </div>
                     </div>
 
                     <!-- Fila 2: CI, Celular, Fijo -->
                     <div class="info-row">
                         <div class="info-field">
-                            <label class="info-label">CI:</label>
-                            <div class="info-value">${cliente.ci || '-'}</div>
+                            <label class="info-label">Código:</label>
+                            <div class="info-value">${cliente.codigo || '-'}</div>
+                        </div>
+                        <div class="info-field">
+                            <label class="info-label">Sector (Grupo):</label>
+                            <div class="info-value">${cliente.sector || '-'}</div>
                         </div>
                         <div class="info-field">
                             <label class="info-label">Celular:</label>
@@ -44,19 +52,11 @@ function createGeneralTabContent(cliente: ClienteDetalle): string {
 
                     <!-- Fila 3: Sector, Código -->
                     <div class="info-row">
-                        <div class="info-field">
-                            <label class="info-label">Sector (Grupo):</label>
-                            <div class="info-value">${cliente.sector || '-'}</div>
-                        </div>
-                        <div class="info-field">
-                            <label class="info-label">Código:</label>
-                            <div class="info-value">${cliente.codigo || '-'}</div>
-                        </div>
                     </div>
 
                     <!-- Sección de Garante -->
                     <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #e9ecef;">
-                        <h3 style="font-size: 16px; font-weight: bold; color: #333; margin-bottom: 15px;">Garante</h3>
+                        <h3 style="font-size: 14px; font-weight: bold; color: #333; margin-bottom: 15px;">Garante</h3>
                         <div class="info-row">
                             <div class="info-field">
                                 <label class="info-label">Nombre Completo:</label>
