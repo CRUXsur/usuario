@@ -107,6 +107,44 @@ export interface CreateBancoClienteDto {
     isActive?: boolean;
 }
 
+// Interface for Prestamo
+export interface PrestamoData {
+    id_prestamo: string;
+    cliente?: ClienteDetalle;
+    monto_prestado: number;
+    tasa_interes: number;
+    plazo_meses: number;
+    fecha_prestamo: string;
+    fecha_vencimiento: string;
+    isActive: boolean;
+    cuota_mensual?: number; // Campo calculado
+    created_at?: string;
+    updated_at?: string;
+}
+
+// Interface for Create Prestamo DTO
+export interface CreatePrestamoDto {
+    id_cliente: string;
+    monto_prestado?: number;
+    tasa_interes?: number;
+    plazo_meses?: number;
+    fecha_prestamo?: Date | string;
+    fecha_vencimiento?: Date | string;
+    isActive?: boolean;
+    images?: string[];
+}
+
+// Interface for Update Prestamo DTO
+export interface UpdatePrestamoDto {
+    monto_prestado?: number;
+    tasa_interes?: number;
+    plazo_meses?: number;
+    fecha_prestamo?: Date | string;
+    fecha_vencimiento?: Date | string;
+    isActive?: boolean;
+    images?: string[];
+}
+
 // Function to call the check-device-id API
 export async function checkDeviceId(): Promise<DeviceCheckResponse> {
     try {
@@ -506,6 +544,239 @@ export async function eliminarBancoCliente(bancoId: string): Promise<ApiResponse
         return {
             success: false,
             error: error instanceof Error ? error.message : 'Error desconocido al eliminar banco',
+        };
+    }
+}
+
+// Function to get all prestamos
+export async function obtenerPrestamos(): Promise<ApiResponse<PrestamoData[]>> {
+    try {
+        const token = getAuthToken();
+        if (!token) {
+            return {
+                success: false,
+                error: 'No se encontró token de autenticación. Por favor, inicie sesión.',
+            };
+        }
+
+        console.log('📡 Obteniendo lista de préstamos...');
+
+        const response = await fetch(`${API_BASE_URL}/prestamos`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const prestamos = await response.json();
+        console.log('📥 Préstamos obtenidos:', prestamos);
+
+        return {
+            success: true,
+            data: prestamos,
+        };
+
+    } catch (error) {
+        console.error('💥 Error al obtener préstamos:', error);
+        return {
+            success: false,
+            error: error instanceof Error ? error.message : 'Error desconocido al obtener préstamos',
+        };
+    }
+}
+
+// Function to get prestamos by cliente ID
+export async function obtenerPrestamosPorCliente(clienteId: string): Promise<ApiResponse<PrestamoData[]>> {
+    try {
+        const token = getAuthToken();
+        if (!token) {
+            return {
+                success: false,
+                error: 'No se encontró token de autenticación. Por favor, inicie sesión.',
+            };
+        }
+
+        console.log(`📡 Obteniendo préstamos del cliente ${clienteId}...`);
+
+        // Obtenemos todos los préstamos y filtramos por cliente
+        const response = await fetch(`${API_BASE_URL}/prestamos`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const prestamos = await response.json();
+        
+        // Filtrar préstamos por cliente
+        const prestamosFiltrados = prestamos.filter((p: PrestamoData) => 
+            p.cliente?.id_cliente === clienteId
+        );
+
+        console.log('📥 Préstamos del cliente obtenidos:', prestamosFiltrados);
+
+        return {
+            success: true,
+            data: prestamosFiltrados,
+        };
+
+    } catch (error) {
+        console.error('💥 Error al obtener préstamos del cliente:', error);
+        return {
+            success: false,
+            error: error instanceof Error ? error.message : 'Error desconocido al obtener préstamos',
+        };
+    }
+}
+
+// Function to create prestamo
+export async function crearPrestamo(prestamoData: CreatePrestamoDto): Promise<ApiResponse<PrestamoData>> {
+    try {
+        const token = getAuthToken();
+        if (!token) {
+            return {
+                success: false,
+                error: 'No se encontró token de autenticación. Por favor, inicie sesión.',
+            };
+        }
+
+        console.log('📡 Creando préstamo...', prestamoData);
+
+        const response = await fetch(`${API_BASE_URL}/prestamos`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify(prestamoData),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            console.error('❌ Error en la respuesta del servidor:', data);
+            return {
+                success: false,
+                error: data.message || data.error || `Error HTTP: ${response.status}`,
+            };
+        }
+
+        console.log('✅ Préstamo creado exitosamente:', data);
+        return {
+            success: true,
+            message: 'Préstamo creado exitosamente',
+            data: data,
+        };
+
+    } catch (error) {
+        console.error('💥 Error al crear préstamo:', error);
+        return {
+            success: false,
+            error: error instanceof Error ? error.message : 'Error desconocido al crear préstamo',
+        };
+    }
+}
+
+// Function to update prestamo
+export async function actualizarPrestamo(prestamoId: string, prestamoData: UpdatePrestamoDto): Promise<ApiResponse<PrestamoData>> {
+    try {
+        const token = getAuthToken();
+        if (!token) {
+            return {
+                success: false,
+                error: 'No se encontró token de autenticación. Por favor, inicie sesión.',
+            };
+        }
+
+        console.log(`📡 Actualizando préstamo ${prestamoId}...`, prestamoData);
+
+        const response = await fetch(`${API_BASE_URL}/prestamos/${prestamoId}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify(prestamoData),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            console.error('❌ Error en la respuesta del servidor:', data);
+            return {
+                success: false,
+                error: data.message || data.error || `Error HTTP: ${response.status}`,
+            };
+        }
+
+        console.log('✅ Préstamo actualizado exitosamente:', data);
+        return {
+            success: true,
+            message: 'Préstamo actualizado exitosamente',
+            data: data,
+        };
+
+    } catch (error) {
+        console.error('💥 Error al actualizar préstamo:', error);
+        return {
+            success: false,
+            error: error instanceof Error ? error.message : 'Error desconocido al actualizar préstamo',
+        };
+    }
+}
+
+// Function to delete prestamo
+export async function eliminarPrestamo(prestamoId: string): Promise<ApiResponse> {
+    try {
+        const token = getAuthToken();
+        if (!token) {
+            return {
+                success: false,
+                error: 'No se encontró token de autenticación. Por favor, inicie sesión.',
+            };
+        }
+
+        console.log(`📡 Eliminando préstamo ${prestamoId}...`);
+
+        const response = await fetch(`${API_BASE_URL}/prestamos/${prestamoId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            console.error('❌ Error en la respuesta del servidor:', data);
+            return {
+                success: false,
+                error: data.message || data.error || `Error HTTP: ${response.status}`,
+            };
+        }
+
+        console.log('✅ Préstamo eliminado exitosamente:', data);
+        return {
+            success: true,
+            message: 'Préstamo eliminado exitosamente',
+        };
+
+    } catch (error) {
+        console.error('💥 Error al eliminar préstamo:', error);
+        return {
+            success: false,
+            error: error instanceof Error ? error.message : 'Error desconocido al eliminar préstamo',
         };
     }
 }

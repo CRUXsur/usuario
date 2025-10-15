@@ -1551,7 +1551,9 @@ h3 {
   width: 90%;
   max-width: 500px;
   max-height: 90vh;
-  overflow-y: auto;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .cuenta-modal .modal-header {
@@ -1560,6 +1562,7 @@ h3 {
   align-items: center;
   padding: 20px;
   border-bottom: 1px solid #dee2e6;
+  flex-shrink: 0;
 }
 
 .cuenta-modal .modal-header h3 {
@@ -1589,6 +1592,27 @@ h3 {
 
 .cuenta-modal .modal-body {
   padding: 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+/* Estilo personalizado para la barra de scroll del modal */
+.cuenta-modal .modal-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.cuenta-modal .modal-body::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.cuenta-modal .modal-body::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.cuenta-modal .modal-body::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 .cuenta-modal .form-group {
@@ -1665,6 +1689,7 @@ h3 {
   gap: 10px;
   padding: 20px;
   border-top: 1px solid #dee2e6;
+  flex-shrink: 0;
 }
 
 .cuenta-modal .btn {
@@ -1731,6 +1756,219 @@ h3 {
   
   .cuenta-modal .btn {
     width: 100%;
+  }
+}
+
+/* ============================================================================================================ */
+/* ===================================== ESTILOS PARA TAB PRÉSTAMOS ========================================== */
+/* ============================================================================================================ */
+
+/* Wrapper específico para centrar solo el tab de préstamos */
+#tab-prestamos.active {
+  display: block !important;
+}
+
+#tab-prestamos .prestamos-container {
+  width: 100%;
+  padding: 0;
+}
+
+#tab-prestamos .prestamos-empty-state {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+}
+
+#tab-prestamos .prestamos-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+#tab-prestamos .prestamos-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  background: white;
+}
+
+#tab-prestamos .prestamos-table thead {
+  background: linear-gradient(135deg, #837770 0%, #b7ada6 100%);
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+#tab-prestamos .prestamos-table thead th {
+  padding: 15px 12px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+#tab-prestamos .prestamos-table thead th.text-center,
+#tab-prestamos .prestamos-table tbody td.text-center {
+  text-align: center;
+}
+
+#tab-prestamos .prestamos-table thead th.acciones-header {
+  text-align: center;
+}
+
+#tab-prestamos .prestamos-table tbody tr {
+  border-bottom: 1px solid #e0e0e0;
+  transition: background-color 0.2s ease;
+}
+
+#tab-prestamos .prestamos-table tbody tr:hover {
+  background-color: #f8f9ff;
+}
+
+#tab-prestamos .prestamos-table tbody td {
+  padding: 12px;
+  vertical-align: middle;
+}
+
+#tab-prestamos .prestamos-table tbody td.monto-column {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+#tab-prestamos .prestamos-table tbody td.acciones-column {
+  white-space: nowrap;
+}
+
+#tab-prestamos .btn-edit-prestamo {
+  background: none;
+  border: none;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.2s ease;
+  border-radius: 6px;
+  margin: 0 2px;
+}
+
+#tab-prestamos .btn-edit-prestamo:hover {
+  background-color: #e3e3e3;
+  transform: scale(1.05);
+}
+
+#tab-prestamos .btn-edit-prestamo:active {
+  transform: scale(0.95);
+}
+
+/* Fila de nuevo préstamo */
+#tab-prestamos .fila-nuevo-prestamo {
+  background-color: #f8f9fa;
+  border-top: 2px dashed #dee2e6 !important;
+}
+
+#tab-prestamos .fila-nuevo-prestamo:hover {
+  background-color: #e9ecef;
+}
+
+#tab-prestamos .nuevo-prestamo-text {
+  padding: 20px !important;
+  text-align: center;
+}
+
+#tab-prestamos .nuevo-prestamo-label {
+  font-size: 14px;
+  color: #6c757d;
+  font-weight: 500;
+  font-style: italic;
+}
+
+#tab-prestamos .btn-add-prestamo {
+  background: none;
+  border: none;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.2s ease;
+  border-radius: 6px;
+  margin: 0 2px;
+}
+
+#tab-prestamos .btn-add-prestamo:hover {
+  background-color: #d4edda;
+  transform: scale(1.05);
+}
+
+#tab-prestamos .btn-add-prestamo:active {
+  transform: scale(0.95);
+}
+
+/* Modal de edición de préstamo - reutiliza estilos de cuenta-modal */
+#modal-prestamo-edit .form-group,
+#modal-prestamo-nuevo .form-group {
+  margin-bottom: 20px;
+}
+
+#modal-prestamo-edit .form-group label,
+#modal-prestamo-nuevo .form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #495057;
+  font-size: 14px;
+}
+
+#modal-prestamo-edit .form-group input[type="number"],
+#modal-prestamo-edit .form-group input[type="date"],
+#modal-prestamo-nuevo .form-group input[type="number"],
+#modal-prestamo-nuevo .form-group input[type="date"] {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+#modal-prestamo-edit .form-group input[type="number"]:focus,
+#modal-prestamo-edit .form-group input[type="date"]:focus,
+#modal-prestamo-nuevo .form-group input[type="number"]:focus,
+#modal-prestamo-nuevo .form-group input[type="date"]:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+#modal-prestamo-edit .form-group input[readonly],
+#modal-prestamo-nuevo .form-group input[readonly] {
+  background-color: #e9ecef;
+  cursor: not-allowed;
+}
+
+#modal-prestamo-edit .form-group small,
+#modal-prestamo-nuevo .form-group small {
+  display: block;
+  margin-top: 5px;
+}
+
+/* Responsive para tabla de préstamos */
+@media (max-width: 768px) {
+  #tab-prestamos .prestamos-table {
+    font-size: 11px;
+  }
+  
+  #tab-prestamos .prestamos-table thead th,
+  #tab-prestamos .prestamos-table tbody td {
+    padding: 8px 6px;
+  }
+  
+  #tab-prestamos .btn-edit-prestamo,
+  #tab-prestamos .btn-add-prestamo {
+    font-size: 14px;
+    padding: 4px 8px;
   }
 }
 
