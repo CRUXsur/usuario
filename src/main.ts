@@ -1,24 +1,54 @@
 import './style.css'
-import typescriptLogo from './typescript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.ts'
+import { renderLoginForm, initializeLogin } from './login'
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
-`
+// Verificar si ya hay un token válido en localStorage
+function checkAuthStatus(): boolean {
+  const token = localStorage.getItem('token')
+  const user = localStorage.getItem('user')
+  
+  if (token && user) {
+    try {
+      // Verificar si el token no ha expirado (opcional)
+      const userData = JSON.parse(user)
+      console.log('User already authenticated:', userData)
+      return true
+    } catch (error) {
+      console.error('Error parsing user data:', error)
+      localStorage.removeItem('token')
+      localStorage.removeItem('user')
+      return false
+    }
+  }
+  return false
+}
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+// Función para navegar al dashboard
+async function navigateToDashboard(): Promise<void> {
+  try {
+    const { renderDashboard } = await import('./dashboard')
+    const { inicializarModalNuevoCliente } = await import('./nuevocliente')
+    
+    document.querySelector<HTMLDivElement>('#app')!.innerHTML = ''
+    renderDashboard()
+    
+    // Esperar a que el DOM se actualice antes de inicializar el modal
+    setTimeout(() => {
+      inicializarModalNuevoCliente()
+    }, 0)
+  } catch (error) {
+    console.error('Error loading dashboard:', error)
+    alert('Error al cargar el dashboard')
+  }
+}
+
+// Inicializar la aplicación
+document.addEventListener('DOMContentLoaded', () => {
+  if (checkAuthStatus()) {
+    // Si ya está autenticado, ir directamente al dashboard
+    navigateToDashboard()
+  } else {
+    // Si no está autenticado, mostrar el formulario de login
+    document.querySelector<HTMLDivElement>('#app')!.innerHTML = renderLoginForm()
+    initializeLogin()
+  }
+})
